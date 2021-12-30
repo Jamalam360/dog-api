@@ -1,7 +1,7 @@
 import { exists } from "fs/exists.ts";
 import { CONFIG_FILE_NAME } from "constants";
 import { yellow } from "colors";
-import { value, question, warn } from "format";
+import { question, value, warn } from "format";
 
 interface HttpsConfig {
   secure: boolean;
@@ -57,7 +57,12 @@ async function getConfig(): Promise<Config> {
       ) == "y"
     ) {
       await initializeDefaultConfig();
-      console.log(warn("Default config created, please check configuration at " + value(CONFIG_FILE_NAME)));
+      console.log(
+        warn(
+          "Default config created, please check configuration at " +
+            value(CONFIG_FILE_NAME),
+        ),
+      );
     } else {
       promptTillValid("Please create a config. ", ["done"]);
     }

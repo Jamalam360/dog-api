@@ -2,7 +2,7 @@ import { Application } from "oak";
 import { oakCors } from "cors";
 import { cyan, yellow } from "colors";
 import { cron } from "cron";
-import { PORT, CERTIFICATE_PATH, PRIVATE_KEY_PATH } from "constants"
+import { CERTIFICATE_PATH, PORT, PRIVATE_KEY_PATH } from "constants";
 
 const app = new Application();
 
@@ -53,8 +53,8 @@ if (!development) {
     }),
   );
 
-//   app.use(router.allowedMethods());
-//   app.use(router.routes());
+  //   app.use(router.allowedMethods());
+  //   app.use(router.routes());
 
   await app.listen({
     port: PORT,
@@ -65,8 +65,8 @@ if (!development) {
 } else {
   console.log(yellow("Using development environment settings"));
 
-//   app.use(router.allowedMethods());
-//   app.use(router.routes());
+  //   app.use(router.allowedMethods());
+  //   app.use(router.routes());
 
   await app.listen({
     port: PORT,
