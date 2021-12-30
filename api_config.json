@@ -1,0 +1,8 @@
+{
+  "port": 8080,
+  "https": {
+    "secure": false
+  },
+  "imageRepository": "https://github.com/dog-jamalam-tech/images",
+  "recacheInterval": "1 */30 * * * *"
+}

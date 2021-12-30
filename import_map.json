@@ -1,0 +1,11 @@
+{
+"imports": {
+    "constants": "./constants.ts",
+    "format": "./fmt.ts",
+    "oak": "https://deno.land/x/oak@v10.1.0/mod.ts",
+    "cors": "https://deno.land/x/cors@v1.2.2/mod.ts",
+    "colors": "https://deno.land/std@0.119.0/fmt/colors.ts",
+    "cron": "https://deno.land/x/deno_cron@v1.0.0/cron.ts",
+    "fs/": "https://deno.land/std@0.119.0/fs/"
+  }
+}
