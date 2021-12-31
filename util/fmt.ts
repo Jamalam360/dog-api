@@ -1,4 +1,4 @@
-import { yellow, red, italic } from "colors";
+import { italic, red, yellow } from "colors";
 
 export function warn(s: string): string {
   return yellow(s);
