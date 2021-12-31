@@ -2,7 +2,7 @@ import { Application } from "oak/mod.ts";
 import { oakCors } from "cors";
 import { cron } from "cron";
 import { info } from "/util/fmt.ts";
-import { getConfig } from "/config.ts"
+import { getConfig } from "/config.ts";
 
 const app = new Application();
 const config = await getConfig();
@@ -10,7 +10,7 @@ const config = await getConfig();
 cron(config.recacheInterval, () => tryRecache());
 
 router.forEach((entry) => {
-   console.log(info("Registered Path: " + entry.path));
+  console.log(info("Registered Path: " + entry.path));
 });
 
 // Logger
