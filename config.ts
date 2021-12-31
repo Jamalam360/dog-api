@@ -56,7 +56,12 @@ export async function getConfig(): Promise<Config> {
       ) == "y"
     ) {
       await initializeDefaultConfig();
-      console.log(warn("Default config created, please check configuration at " + value(CONFIG_FILE_NAME)));
+      console.log(
+        warn(
+          "Default config created, please check configuration at " +
+            value(CONFIG_FILE_NAME),
+        ),
+      );
     } else {
       promptTillValid("Please create a config. ", ["done"]);
     }

@@ -41,20 +41,13 @@ if (config.https.secure) {
     }),
   );
 
-//   app.use(router.allowedMethods());
-//   app.use(router.routes());
+  //   app.use(router.allowedMethods());
+  //   app.use(router.routes());
 
   await app.listen({
     port: config.port,
     secure: true,
     certFile: config.https.certFile!,
     keyFile: config.https.keyFile!,
-  });
-} else {
-//   app.use(router.allowedMethods());
-//   app.use(router.routes());
-
-  await app.listen({
-    port: config.port,
   });
 }
