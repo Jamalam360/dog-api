@@ -1,7 +1,6 @@
 import { exists } from "fs/exists.ts";
-import { CONFIG_FILE_NAME } from "constants";
-import { yellow } from "colors";
-import { value, question, warn } from "format";
+import { CONFIG_FILE_NAME } from "/constants.ts";
+import { value, warn } from "/util/fmt.ts";
 
 interface HttpsConfig {
   secure: boolean;
@@ -27,7 +26,7 @@ async function getConfigOrNull(): Promise<Config | null> {
 
 function promptTillValid(msg: string, validInputs: string[]): string {
   while (true) {
-    const input = prompt(question(msg + " [" + validInputs.join("/") + "]: "));
+    const input = prompt(msg + " [" + validInputs.join("/") + "]: ");
     if (validInputs.includes(input!)) {
       return input!;
     }
@@ -47,7 +46,7 @@ async function initializeDefaultConfig(): Promise<void> {
   await Deno.writeTextFile(CONFIG_FILE_NAME, JSON.stringify(config, null, 2));
 }
 
-async function getConfig(): Promise<Config> {
+export async function getConfig(): Promise<Config> {
   const config = await getConfigOrNull();
   if (config === null) {
     if (
@@ -66,5 +65,3 @@ async function getConfig(): Promise<Config> {
     return config;
   }
 }
-
-await getConfig();

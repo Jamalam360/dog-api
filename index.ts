@@ -1,34 +1,24 @@
-import { Application } from "oak";
+import { Application } from "oak/mod.ts";
 import { oakCors } from "cors";
-import { cyan, yellow } from "colors";
 import { cron } from "cron";
-import { PORT, CERTIFICATE_PATH, PRIVATE_KEY_PATH } from "constants"
+import { info } from "/util/fmt.ts";
+import { getConfig } from "/config.ts"
 
 const app = new Application();
+const config = await getConfig();
 
-let development = false;
+cron(config.recacheInterval, () => tryRecache());
 
-//cron(`1 */30 * * * *`, () => tryRecache());
-
-await Deno.readTextFile(CERTIFICATE_PATH).catch(() => {
-  console.log(
-    yellow(
-      "Certificate file not found; this should only occur in a development environment",
-    ),
-  );
-  development = true;
+router.forEach((entry) => {
+   console.log(info("Registered Path: " + entry.path));
 });
-
-// router.forEach((entry) => {
-//   console.log(cyan("Registered Path: " + entry.path));
-// });
 
 // Logger
 app.use(async (ctx, next) => {
   await next();
   const rt = ctx.response.headers.get("X-Response-Time");
   console.log(
-    cyan(ctx.request.method + " " + ctx.request.url + " - " + rt),
+    info(ctx.request.method + " " + ctx.request.url + " - " + rt),
   );
 });
 
@@ -41,12 +31,10 @@ app.use(async (ctx, next) => {
 });
 
 app.addEventListener("listen", () => {
-  console.log(cyan("Listening on port " + PORT));
+  console.log(info("Listening on port " + config.port));
 });
 
-if (!development) {
-  console.log(cyan("Using production environment settings"));
-
+if (config.https.secure) {
   app.use(
     oakCors({
       origin: "https://dog.jamalam.tech",
@@ -57,18 +45,16 @@ if (!development) {
 //   app.use(router.routes());
 
   await app.listen({
-    port: PORT,
+    port: config.port,
     secure: true,
-    certFile: CERTIFICATE_PATH,
-    keyFile: PRIVATE_KEY_PATH,
+    certFile: config.https.certFile!,
+    keyFile: config.https.keyFile!,
   });
 } else {
-  console.log(yellow("Using development environment settings"));
-
 //   app.use(router.allowedMethods());
 //   app.use(router.routes());
 
   await app.listen({
-    port: PORT,
+    port: config.port,
   });
 }
