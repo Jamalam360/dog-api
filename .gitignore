@@ -1,2 +1,2 @@
 *.env
-image_cache.json
+api_config.json
