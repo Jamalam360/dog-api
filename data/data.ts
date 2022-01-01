@@ -7,25 +7,61 @@ import {
   isRateLimited,
 } from "/data/githubApi.ts";
 
-const topLevelBreeds: Breed[] = [];
+export let topLevelBreeds: Breed[] = [];
+export let allImages: string[] = [];
 const config = await getConfig();
 
 export async function updateData() {
-  if (!(await isRateLimited())) {
+  if (!(await isRateLimited()) && false) {
     const topLevelBreedDirectories = await getSubDirectories("");
 
     for (const topLevelBreedDirectory of topLevelBreedDirectories) {
       topLevelBreeds.push(await createBreed(topLevelBreedDirectory));
-      console.log(
-        "Created Breed: " + topLevelBreeds[topLevelBreeds.length - 1].name,
-      );
     }
+
+    await cacheData(topLevelBreeds);
   } else {
     console.log(
       "Github API rate limited. Skipping update. Rate limit will reset at: " +
         await getRateLimitResetTime(),
     );
+
+    topLevelBreeds = await readCachedData();
   }
+
+  populateImages();
+}
+
+function populateImages() {
+  allImages = [];
+
+  for (const breed of topLevelBreeds) {
+    for (const subBreed of breed.subBreeds) {
+      for (const image of subBreed.images) {
+        allImages.push(image);
+      }
+    }
+
+    for (const image of breed.images) {
+      allImages.push(image);
+    }
+  }
+}
+
+async function cacheData(dat: Breed[]) {
+  await Deno.writeTextFile(config.cacheFile, JSON.stringify(dat, null, 2));
+}
+
+async function readCachedData(): Promise<Breed[]> {
+  const data = await Deno.readTextFile(config.cacheFile);
+  const json = JSON.parse(data);
+  const breeds: Breed[] = [];
+
+  for (const breed of json) {
+    breeds.push(breed);
+  }
+
+  return breeds;
 }
 
 async function createBreed(directory: string): Promise<Breed> {

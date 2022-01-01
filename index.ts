@@ -4,11 +4,13 @@ import { cron } from "cron";
 import { info } from "/util/fmt.ts";
 import { getConfig } from "/config.ts";
 import { updateData } from "/data/data.ts";
+import { router } from "/router/router.ts";
 
 const app = new Application();
 const config = await getConfig();
 
-cron(config.recacheInterval, () => await updateData());
+await updateData();
+cron(config.recacheInterval, async () => await updateData());
 
 router.forEach((entry) => {
   console.log(info("Registered Path: " + entry.path));
@@ -42,13 +44,20 @@ if (config.https.secure) {
     }),
   );
 
-  //   app.use(router.allowedMethods());
-  //   app.use(router.routes());
+  app.use(router.allowedMethods());
+  app.use(router.routes());
 
   await app.listen({
     port: config.port,
     secure: true,
     certFile: config.https.certFile!,
     keyFile: config.https.keyFile!,
+  });
+} else {
+  app.use(router.allowedMethods());
+  app.use(router.routes());
+
+  await app.listen({
+    port: config.port,
   });
 }
