@@ -1,5 +1,5 @@
 import { getConfig } from "/config.ts";
-import { yellow } from "colors";
+import { red, yellow } from "colors";
 
 const CONTENTS_URL =
   "https://api.github.com/repos/dog-jamalam-tech/images/contents";
@@ -67,15 +67,21 @@ export async function getImageUrlsFromDir(
 
   console.log(yellow("API Request:") + " Get Images in Directory " + dir);
 
-  for (const content of contents) {
-    if (content.type == "dir" && includeSubDirectories) {
-      images.concat(
-        await getImageUrlsFromDir(content.path, includeSubDirectories),
-      );
-    } else if (content.type == "file") {
-      if (content.name.includes(".jpg" || ".png" || ".jpeg")) {
-        images.push(content.download_url);
+  try {
+    for (const content of contents) {
+      if (content.type == "dir" && includeSubDirectories) {
+        images.concat(
+          await getImageUrlsFromDir(content.path, includeSubDirectories),
+        );
+      } else if (content.type == "file") {
+        if (content.name.includes(".jpg" || ".png" || ".jpeg")) {
+          images.push(content.download_url);
+        }
       }
+    }
+  } catch (e) {
+    if (e instanceof TypeError) {
+      console.log(red("API Request Failed: ") + contents);
     }
   }
 
