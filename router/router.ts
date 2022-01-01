@@ -5,6 +5,11 @@ import "/util/array.extension.ts";
 
 export const router = new Router();
 
+router.get(BASE_API_URL + "/ping", (ctx) => {
+  ctx.response.status = 200;
+  ctx.response.body = "Pong!";
+});
+
 router.get(BASE_API_URL + "/breeds/list/all", (ctx) => {
   //deno-lint-ignore no-explicit-any
   const breeds: { [k: string]: any } = {};
