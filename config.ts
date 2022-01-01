@@ -66,6 +66,8 @@ export async function getConfig(): Promise<Config> {
             value(CONFIG_FILE_NAME),
         ),
       );
+
+      Deno.exit(0);
     } else {
       promptTillValid("Please create a config. ", ["done"]);
     }
