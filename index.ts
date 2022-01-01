@@ -40,7 +40,7 @@ app.addEventListener("listen", () => {
 if (config.https.secure) {
   app.use(
     oakCors({
-      origin: "https://dog.jamalam.tech",
+      origin: "*",
     }),
   );
 
