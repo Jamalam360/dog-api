@@ -1,6 +1,7 @@
 import { Router } from "oak/mod.ts";
 import { BASE_API_URL } from "/constants.ts";
 import { allImages, topLevelBreeds } from "/data/data.ts";
+import "/util/array.extension.ts";
 
 export const router = new Router();
 
@@ -57,22 +58,15 @@ router.get(BASE_API_URL + "/breed/:breed/images/random/:number", (ctx) => {
   const breed = topLevelBreeds.find((breed) => breed.name === breedName);
 
   let number = parseInt(ctx.params.number);
-  const images = [];
 
   if (number > 50) {
     number = 50;
   }
 
   if (breed) {
-    for (let i = 0; i < number; i++) {
-      images.push(
-        breed.images[Math.floor(Math.random() * breed.images.length)],
-      );
-    }
-
     ctx.response.status = 200;
     ctx.response.body = {
-      message: images,
+      message: breed.images.randomElements(number),
       status: "success",
     };
   } else {
@@ -152,8 +146,7 @@ router.get(BASE_API_URL + "/breed/:breed/:subbreed/images/random", (ctx) => {
     if (subBreed) {
       ctx.response.status = 200;
       ctx.response.body = {
-        message:
-          subBreed.images[Math.floor(Math.random() * subBreed.images.length)],
+        message: subBreed.images.randomElement(),
         status: "success",
       };
     } else {
@@ -182,7 +175,6 @@ router.get(
     const breed = topLevelBreeds.find((breed) => breed.name === breedName);
 
     let number = parseInt(ctx.params.number);
-    const images = [];
 
     if (number > 50) {
       number = 50;
@@ -194,15 +186,9 @@ router.get(
       );
 
       if (subBreed) {
-        for (let i = 0; i < number; i++) {
-          images.push(
-            subBreed.images[Math.floor(Math.random() * subBreed.images.length)],
-          );
-        }
-
         ctx.response.status = 200;
         ctx.response.body = {
-          message: images,
+          message: subBreed.images.randomElements(number),
           status: "success",
         };
       } else {
@@ -227,26 +213,21 @@ router.get(
 router.get(BASE_API_URL + "/breeds/image/random", (ctx) => {
   ctx.response.status = 200;
   ctx.response.body = {
-    message: allImages[Math.floor(Math.random() * allImages.length)],
+    message: allImages.randomElement(),
     status: "success",
   };
 });
 
 router.get(BASE_API_URL + "/breeds/image/random/:number", (ctx) => {
   let number = parseInt(ctx.params.number);
-  const images = [];
 
   if (number > 50) {
     number = 50;
   }
 
-  for (let i = 0; i < number; i++) {
-    images.push(allImages[Math.floor(Math.random() * allImages.length)]);
-  }
-
   ctx.response.status = 200;
   ctx.response.body = {
-    message: images,
+    message: allImages.randomElements(number),
     status: "success",
   };
 });

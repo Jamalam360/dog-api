@@ -12,7 +12,7 @@ export let allImages: string[] = [];
 const config = await getConfig();
 
 export async function updateData() {
-  if (!(await isRateLimited()) && false) {
+  if (!(await isRateLimited())) {
     const topLevelBreedDirectories = await getSubDirectories("");
 
     for (const topLevelBreedDirectory of topLevelBreedDirectories) {
@@ -73,7 +73,6 @@ async function createBreed(directory: string): Promise<Breed> {
   const subDirs = await getSubDirectories(directory);
 
   for (const subDir of subDirs) {
-    console.log(subDir);
     subBreeds.push(await createBreed(subDir));
   }
 
