@@ -5,16 +5,20 @@ const CONTENTS_URL =
   "https://api.github.com/repos/dog-jamalam-tech/images/contents";
 const config = await getConfig();
 
-export async function isRateLimited(): Promise<boolean> {
+export async function getRemainingRateLimit(): Promise<number> {
   const res = await fetch(CONTENTS_URL, {
     headers: {
       Authorization: "token " + config.githubToken,
     },
   });
 
-  console.log(yellow("API Request:") + " Check Rate Limit");
+  console.log(yellow("API Request:") + " Get Remaining Rate Limit");
 
-  return res.headers.get("X-RateLimit-Remaining") == "0";
+  return parseInt(res.headers.get("X-RateLimit-Remaining")!);
+}
+
+export async function isRateLimited(): Promise<boolean> {
+  return await getRemainingRateLimit() == 0;
 }
 
 export async function getRateLimitResetTime(): Promise<string> {

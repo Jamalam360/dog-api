@@ -3,6 +3,7 @@ import { getConfig } from "/config.ts";
 import {
   getImageUrlsFromDir,
   getRateLimitResetTime,
+  getRemainingRateLimit,
   getSubDirectories,
   isRateLimited,
 } from "/data/githubApi.ts";
@@ -30,6 +31,11 @@ export async function updateData() {
   }
 
   populateImages();
+
+  console.log(
+    "Finished updating data. " + allImages.length + " images found. " +
+      await getRemainingRateLimit() + " requests remaining before rate limit.",
+  );
 }
 
 function populateImages() {
