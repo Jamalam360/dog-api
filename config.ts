@@ -13,6 +13,7 @@ interface Config {
   https: HttpsConfig;
   imageRepository: string;
   recacheInterval: string;
+  githubToken: string;
 }
 
 async function getConfigOrNull(): Promise<Config | null> {
@@ -41,6 +42,7 @@ async function initializeDefaultConfig(): Promise<void> {
     },
     imageRepository: "https://github.com/dog-jamalam-tech/images",
     recacheInterval: "1 */30 * * * *",
+    githubToken: "",
   };
 
   await Deno.writeTextFile(CONFIG_FILE_NAME, JSON.stringify(config, null, 2));

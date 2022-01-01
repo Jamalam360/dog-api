@@ -3,11 +3,12 @@ import { oakCors } from "cors";
 import { cron } from "cron";
 import { info } from "/util/fmt.ts";
 import { getConfig } from "/config.ts";
+import { updateData } from "/data/data.ts";
 
 const app = new Application();
 const config = await getConfig();
 
-cron(config.recacheInterval, () => tryRecache());
+cron(config.recacheInterval, () => await updateData());
 
 router.forEach((entry) => {
   console.log(info("Registered Path: " + entry.path));

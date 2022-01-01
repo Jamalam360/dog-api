@@ -1,5 +1,5 @@
-interface Breed {
+export interface Breed {
   name: string;
-  subBreeds: string[];
+  subBreeds: Breed[];
   images: string[];
 }
