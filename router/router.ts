@@ -19,7 +19,8 @@ router.get(BASE_API_URL + "/statistics", (ctx) => {
   ctx.response.body = {
     breeds: {
       topLevelBreedsCount: topLevelBreeds.length,
-      subBreedsCount: topLevelBreeds.map((breed) => breed.subBreeds).length,
+      subBreedsCount: topLevelBreeds.map((breed) => breed.subBreeds.length)
+        .reduce((a, b) => a + b),
     },
     images: {
       count: allImages.length,
@@ -28,7 +29,6 @@ router.get(BASE_API_URL + "/statistics", (ctx) => {
       lastRecacheTime: lastRecacheTime,
     },
     general: {
-      endpointCount: router.routes.length,
       requestNumber: requestNumber,
     },
   };
