@@ -1,13 +1,35 @@
 import { Router } from "oak/mod.ts";
 import { BASE_API_URL } from "/constants.ts";
-import { allImages, topLevelBreeds } from "/data/data.ts";
+import { allImages, lastRecacheTime, topLevelBreeds } from "/data/data.ts";
+import { getRemainingRateLimit } from "/data/githubApi.ts";
+import { getConfig } from "/config.ts";
 import "/util/array.extension.ts";
 
 export const router = new Router();
+const config = await getConfig();
 
 router.get(BASE_API_URL + "/ping", (ctx) => {
   ctx.response.status = 200;
   ctx.response.body = "Pong!";
+});
+
+router.get(BASE_API_URL + "/statistics", async (ctx) => {
+  ctx.response.status = 200;
+  ctx.response.body = {
+    breeds: {
+      topLevelBreedsCount: topLevelBreeds.length,
+      subBreedsCount: topLevelBreeds.map((breed) => breed.subBreeds).length,
+    },
+    githubApi: {
+      rateLimitRemaining: await getRemainingRateLimit(),
+    },
+    images: {
+      count: allImages.length,
+      repository: config.imageRepository,
+      recacheInterval: config.recacheInterval,
+      lastRecacheTime: lastRecacheTime,
+    },
+  };
 });
 
 router.get(BASE_API_URL + "/breeds/list/all", (ctx) => {

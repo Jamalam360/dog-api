@@ -10,6 +10,7 @@ import {
 
 export let topLevelBreeds: Breed[] = [];
 export let allImages: string[] = [];
+export let lastRecacheTime: Date;
 const config = await getConfig();
 
 export async function updateData() {
@@ -38,6 +39,8 @@ export async function updateData() {
     "Finished updating data. " + allImages.length + " images found. " +
       await getRemainingRateLimit() + " requests remaining before rate limit.",
   );
+
+  lastRecacheTime = new Date();
 }
 
 function populateImages() {
