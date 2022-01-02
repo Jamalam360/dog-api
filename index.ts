@@ -35,7 +35,8 @@ app.use(async (ctx, next) => {
   ctx.response.headers.set("X-Response-Time", ms + "ms");
 });
 
-app.use((ctx) => {
+app.use(async (ctx, next) => {
+  await next();
   requestNumber++;
 });
 
