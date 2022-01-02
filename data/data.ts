@@ -43,14 +43,12 @@ export async function updateData() {
 function populateImages() {
   allImages = [];
 
-  for (const breed of topLevelBreeds) {
-    allImages.concat(breed.images);
-    if (breed.subBreeds.length > 0) {
-      for (const subBreed of breed.subBreeds) {
-        allImages.concat(subBreed.images);
-      }
-    }
-  }
+  topLevelBreeds.forEach((breed) => {
+    breed.images.forEach((image) => allImages.push(image));
+    breed.subBreeds.forEach((subBreed) =>
+      subBreed.images.forEach((image) => allImages.push(image))
+    );
+  });
 }
 
 async function cacheData(dat: Breed[]) {
