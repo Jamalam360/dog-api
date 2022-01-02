@@ -15,7 +15,7 @@ jobs:
         with:
           deno-version: vx.x.x
       - name: Compile
-        run: deno compile --allow-net --allow-read --allow-write --quiet --no-check --import-map=import_map.json --output DogAPI-${{ matrix.target }}
+        run: deno compile --allow-net --allow-read --allow-write --quiet --no-check --import-map=import_map.json --output DogAPI-${{ matrix.target }} ./index.ts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
