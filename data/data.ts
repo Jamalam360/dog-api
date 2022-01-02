@@ -44,14 +44,11 @@ function populateImages() {
   allImages = [];
 
   for (const breed of topLevelBreeds) {
-    for (const subBreed of breed.subBreeds) {
-      for (const image of subBreed.images) {
-        allImages.push(image);
+    allImages.concat(breed.images);
+    if (breed.subBreeds.length > 0) {
+      for (const subBreed of breed.subBreeds) {
+        allImages.concat(subBreed.images);
       }
-    }
-
-    for (const image of breed.images) {
-      allImages.push(image);
     }
   }
 }
