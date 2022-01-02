@@ -1,5 +1,9 @@
 name: Compile Source
-on: push
+on: 
+  workflow_run:
+    workflows: ["Format Source"]
+    types:
+      - completed
 
 jobs:
   compile:
