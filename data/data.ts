@@ -16,7 +16,7 @@ const config = await getConfig();
 export async function updateData() {
   topLevelBreeds = [];
 
-  if (false && !(await isRateLimited())) {
+  if (!(await isRateLimited())) {
     const topLevelBreedDirectories = await getSubDirectories("");
 
     for (const topLevelBreedDirectory of topLevelBreedDirectories) {
