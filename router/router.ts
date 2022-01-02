@@ -4,6 +4,7 @@ import { allImages, lastRecacheTime, topLevelBreeds } from "/data/data.ts";
 import { getRemainingRateLimit } from "/data/githubApi.ts";
 import { getConfig } from "/config.ts";
 import "/util/array.extension.ts";
+import { requestNumber } from "/index.ts";
 
 export const router = new Router();
 const config = await getConfig();
@@ -13,21 +14,22 @@ router.get(BASE_API_URL + "/ping", (ctx) => {
   ctx.response.body = "Pong!";
 });
 
-router.get(BASE_API_URL + "/statistics", async (ctx) => {
+router.get(BASE_API_URL + "/statistics", (ctx) => {
   ctx.response.status = 200;
   ctx.response.body = {
     breeds: {
       topLevelBreedsCount: topLevelBreeds.length,
       subBreedsCount: topLevelBreeds.map((breed) => breed.subBreeds).length,
     },
-    githubApi: {
-      rateLimitRemaining: await getRemainingRateLimit(),
-    },
     images: {
       count: allImages.length,
       repository: config.imageRepository,
       recacheInterval: config.recacheInterval,
       lastRecacheTime: lastRecacheTime,
+    },
+    general: {
+      endpointCount: router.routes.length,
+      requestNumber: requestNumber,
     },
   };
 });
