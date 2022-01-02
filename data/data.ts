@@ -13,6 +13,8 @@ export let allImages: string[] = [];
 const config = await getConfig();
 
 export async function updateData() {
+  topLevelBreeds = [];
+
   if (!(await isRateLimited())) {
     const topLevelBreedDirectories = await getSubDirectories("");
 
