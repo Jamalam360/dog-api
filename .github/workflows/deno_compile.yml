@@ -2,6 +2,7 @@ name: Compile Source
 on: 
   workflow_run:
     workflows: ["Format Source"]
+    branches: [main]
     types:
       - completed
 
